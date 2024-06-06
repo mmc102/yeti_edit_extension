@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import Login from './Login'
 
 
 
@@ -32,6 +33,7 @@ const App = () => {
             <button onClick={toggleEditMode}>
                 {isEditMode ? 'Disable Edit Mode' : 'Enable Edit Mode'}
             </button>
+            <Login />
         </div>
     );
 };
