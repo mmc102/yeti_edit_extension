@@ -7,6 +7,7 @@
 - Run `npm install`
 - Run `npm run watch` or `npm run build`
 
+
 Continue the process with the steps listed below.
 
 ### Firefox
