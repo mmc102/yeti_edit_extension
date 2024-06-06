@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import ReactDOM from 'react-dom';
 import browser from 'webextension-polyfill';
 import { type BrowserMessageType, type ColorScheme } from './models';
@@ -97,14 +98,14 @@ document.addEventListener('click', (event: MouseEvent) => {
         document.body.appendChild(root);
     }
 
-    ReactDOM.render(
-        <StyleBox target={ target }
-      changes = { changes }
-      onClose = {() => {
-        currentlyEditingElement!.classList.remove('editing-element');
-        currentlyEditingElement = null;
-    }}
-    />,
-    root
-);
+    const reactive = createRoot(root);
+    reactive.render(
+        <StyleBox target={target}
+            changes={changes}
+            onClose={() => {
+                currentlyEditingElement!.classList.remove('editing-element');
+                currentlyEditingElement = null;
+            }}
+        />
+    );
 });
