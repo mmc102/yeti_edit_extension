@@ -1,39 +1,41 @@
 {
-  "name": "REPLACEME",
-  "version": "1.0.0",
-  "description": "",
-  "main": "background.js",
-  "scripts": {
-    "format": "prettier --write .",
-    "build": "node scripts/build.js",
-    "build:prod": "node scripts/prod-build.js",
-    "build:chrome": "node scripts/package-extension.js",
-    "build:firefox": "node scripts/firefox-build.js"
-  },
-  "keywords": [],
-  "author": "REPLACEME",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@types/webextension-polyfill": "^0.10.0",
-    "esbuild": "^0.18.11",
-    "fs-extra": "^11.1.1",
-    "prettier": "^2.8.4",
-    "typescript": "^5.1.6",
-    "zip-local": "^0.3.5"
-  },
-  "prettier": {
-    "tabWidth": 2,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "none",
-    "arrowParens": "avoid"
-  },
-  "dependencies": {
-    "detect-browser": "^5.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "webextension-polyfill": "^0.10.0"
-  }
+    "name": "Yeti Edit",
+    "version": "1.0.0",
+    "description": "",
+    "main": "background.js",
+    "scripts": {
+        "format": "prettier --write .",
+        "build": "node scripts/build.js",
+        "watch": "nodemon --watch src --ext ts,tsx,js,json,css --exec npm run build",
+        "build:prod": "node scripts/prod-build.js",
+        "build:chrome": "node scripts/package-extension.js",
+        "build:firefox": "node scripts/firefox-build.js"
+    },
+    "keywords": [],
+    "author": "Matt Carroll",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/react": "^18.2.14",
+        "@types/react-dom": "^18.2.6",
+        "@types/webextension-polyfill": "^0.10.0",
+        "esbuild": "^0.18.11",
+        "fs-extra": "^11.1.1",
+        "nodemon": "^3.1.3",
+        "prettier": "^2.8.4",
+        "typescript": "^5.1.6",
+        "zip-local": "^0.3.5"
+    },
+    "prettier": {
+        "tabWidth": 2,
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "none",
+        "arrowParens": "avoid"
+    },
+    "dependencies": {
+        "detect-browser": "^5.3.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "webextension-polyfill": "^0.10.0"
+    }
 }

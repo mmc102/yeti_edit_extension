@@ -1,10 +1,10 @@
 {
-  "extension_name": {
-    "message": "REPLACEME",
-    "description": "The display name for the extension."
-  },
-  "extension_description": {
-    "message": "REPLACEME",
-    "description": "Description of what the extension does."
-  }
+    "extension_name": {
+        "message": "Yeti Edit",
+        "description": "The display name for the extension."
+    },
+    "extension_description": {
+        "message": "Yeti Edit",
+        "description": "Description of what the extension does."
+    }
 }

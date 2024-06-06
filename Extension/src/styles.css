@@ -1,0 +1,25 @@
+.style-box {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+}
+.style-box div {
+    margin-bottom: 5px;
+}
+.style-box label {
+    font-weight: bold;
+}
+.style-box input[type="text"] {
+    width: calc(100% - 80px);
+    margin-left: 10px;
+}
+.style-box input[type="color"] {
+    width: 50px;
+    height: 25px;
+    margin-left: 10px;
+    border: none;
+    padding: 0;
+}
+.editing-element {
+    outline: 2px solid blue !important;
+}
