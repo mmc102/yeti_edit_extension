@@ -77,13 +77,22 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
             }}
             onClick={(e) => e.stopPropagation()}
         >
-            <TextInput
-                label="Class Name"
-                value={target.className}
-                property="className"
-                onChange={() => {}}
-            />
 
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontWeight: 'bold' }}>Style Box</span>
+                <button
+                    onClick={onClose}
+                    style={{
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        color: textColor,
+                        fontSize: '16px',
+                        cursor: 'pointer',
+                    }}
+                >
+                    &times;
+                </button>
+            </div>
             {stylesToShow.map((property) => {
                 const value = styleValues[property];
                 if (property === 'color' || property === 'background-color') {
@@ -115,13 +124,14 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
                             value={value}
                             property={property}
                             onChange={handleChange}
+                            unit="px"
                         />
                     );
                 }
             })}
 
             <TextInput
-                label="innerText"
+                label="Inner Text"
                 value={innerText}
                 property="innerText"
                 onChange={handleChange}

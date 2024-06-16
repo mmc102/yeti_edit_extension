@@ -39,7 +39,6 @@ let changes: Record<string, Record<string, string>> = {};
 let editMode = false;
 let reactive: Root | null = null;
 
-// Retrieve the initial edit mode state from Chrome storage
 chrome.storage.local.get(['editMode'], (result) => {
     if (result.editMode !== undefined) {
         editMode = result.editMode;
@@ -50,7 +49,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.editMode !== undefined) {
         editMode = message.editMode;
         if (!editMode) {
-            // Remove existing style box and blue border if edit mode is disabled
+
             const existingBox = document.querySelector('.style-box');
             if (existingBox) {
                 existingBox.remove();
@@ -63,7 +62,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
     }
 });
-
 document.addEventListener('click', (event: MouseEvent) => {
     if (!editMode) return;
 
@@ -83,17 +81,22 @@ document.addEventListener('click', (event: MouseEvent) => {
     // Remove the blue border from the previously edited element
     if (currentlyEditingElement) {
         currentlyEditingElement.classList.remove('editing-element');
+        currentlyEditingElement.contentEditable = 'false'; // Disable content editable
     }
 
     // Set the currently editing element and add the blue border
     currentlyEditingElement = target;
     currentlyEditingElement.classList.add('editing-element');
 
+    // Make the element content editable and focus on it
+    currentlyEditingElement.contentEditable = 'true';
+    currentlyEditingElement.focus();
+
     // Initialize changes object for the current element
     const targetKey = `${target.tagName}_${target.className}_${target.id}`;
     changes[targetKey] = {};
 
-
+    // Ensure style-box-root exists
     let root = document.getElementById('style-box-root');
     if (!root) {
         root = document.createElement('div');
@@ -101,18 +104,25 @@ document.addEventListener('click', (event: MouseEvent) => {
         document.body.appendChild(root);
     }
 
-
     if (!reactive) {
         reactive = createRoot(root);
     }
 
-
     reactive.render(
-        <StyleBox target={target}
+        <StyleBox
+            target={target}
             changes={changes}
             onClose={() => {
                 currentlyEditingElement!.classList.remove('editing-element');
+                currentlyEditingElement!.contentEditable = 'false'; // Disable content editable
                 currentlyEditingElement = null;
+
+                // Ensure style-box-root is removed on close
+                const existingRoot = document.getElementById('style-box-root');
+                if (existingRoot) {
+                    existingRoot.remove();
+                    reactive = null;
+                }
             }}
         />
     );

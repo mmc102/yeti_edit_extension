@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface TextInputProps {
     label: string;
     value: string;
     property: string;
+    unit?: string;
     onChange: (property: string, value: string) => void;
 }
+export const TextInput: React.FC<TextInputProps> = ({ label, unit, value, property, onChange }) => {
+    const [inputValue, setInputValue] = useState(value);
 
-export const TextInput: React.FC<TextInputProps> = ({ label, value, property, onChange }) => {
+    useEffect(() => {
+        if (unit && value.endsWith(unit)) {
+            setInputValue(value.slice(0, -unit.length));
+        } else {
+            setInputValue(value);
+        }
+    }, [value, unit]);
 
-
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let newVal = e.target.value;
+        setInputValue(newVal);
+        if (unit) {
+            newVal += unit;
+        }
+        onChange(property, newVal);
+    };
 
     return (
         <div style={{ marginBottom: '10px' }}>
@@ -17,13 +33,13 @@ export const TextInput: React.FC<TextInputProps> = ({ label, value, property, on
             <input
                 style={{ color: 'black' }}
                 type="text"
-                value={value}
-                onChange={(e) => { console.log(value); console.log(e.target.value); return onChange(property, e.target.value) }}
+                value={inputValue}
+                onChange={handleChange}
             />
+            {unit && <label>{unit}</label>}
         </div>
     );
 };
-
 
 const rgbToHex = (rgb: string) => {
     const result = rgb.match(/\d+/g);
