@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface TextInputProps {
     label: string;
@@ -21,6 +21,21 @@ export const TextInput: React.FC<TextInputProps> = ({ label, value, property, on
 };
 
 
+const rgbToHex = (rgb: string) => {
+    const result = rgb.match(/\d+/g);
+    if (!result) return '#000000';
+    const r = parseInt(result[0], 10);
+    const g = parseInt(result[1], 10);
+    const b = parseInt(result[2], 10);
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+};
+
+const formatHex = (hex: string) => {
+    if (!hex.startsWith('#')) {
+        return `#${hex}`;
+    }
+    return hex;
+};
 
 interface ColorInputProps {
     label: string;
@@ -30,12 +45,15 @@ interface ColorInputProps {
 }
 
 export const ColorInput: React.FC<ColorInputProps> = ({ label, value, property, onChange }) => {
+
+    const hexValue = value.startsWith('rgb') ? rgbToHex(value) : formatHex(value);
+
     return (
         <div style={{ marginBottom: '10px' }}>
             <label>{label}: </label>
             <input
                 type="color"
-                value={value}
+                value={hexValue}
                 onChange={(e) => onChange(property, e.target.value)}
             />
         </div>
@@ -54,10 +72,13 @@ interface SelectInputProps {
 }
 
 export const SelectInput: React.FC<SelectInputProps> = ({ label, value, property, options, onChange }) => {
+
+    const [val, setVal] = useState(value)
+
     return (
         <div style={{ marginBottom: '10px' }}>
             <label>{label}: </label>
-            <select value={value} onChange={(e) => onChange(property, e.target.value)}>
+            <select value={val} onChange={(e) => { setVal(e.target.value); onChange(property, e.target.value) }}>
                 {options.map((opt) => (
                     <option key={opt} value={opt}>
                         {opt}

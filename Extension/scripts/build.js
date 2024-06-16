@@ -27,7 +27,7 @@ async function main() {
     };
     const contentJob = build({
         ...commonConfig,
-        entryPoints: ['./src/content.ts'],
+        entryPoints: ['./src/content.tsx'],
         outfile: './dist/content.js'
     });
 

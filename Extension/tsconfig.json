@@ -7,6 +7,12 @@
             "dom"
         ],
         "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./*"
+            ]
+        },
         "outDir": "./dist",
         "rootDir": "./src",
         "strict": true,

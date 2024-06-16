@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+import React from 'react';
+import { createRoot, Root } from 'react-dom/client';
 import ReactDOM from 'react-dom';
 import browser from 'webextension-polyfill';
 import { type BrowserMessageType, type ColorScheme } from './models';
 import StyleBox from './StyleBox';
+import './global.css'
 
 browser.runtime.onMessage.addListener(message => {
     console.log('got message', message);
@@ -13,6 +14,7 @@ browser.runtime.onMessage.addListener(message => {
         }
     }
 });
+
 
 function getColorScheme() {
     let scheme: ColorScheme = 'light';
@@ -35,6 +37,7 @@ document.head.appendChild(style);
 let currentlyEditingElement: HTMLElement | null = null;
 let changes: Record<string, Record<string, string>> = {};
 let editMode = false;
+let reactive: Root | null = null;
 
 // Retrieve the initial edit mode state from Chrome storage
 chrome.storage.local.get(['editMode'], (result) => {
@@ -90,7 +93,7 @@ document.addEventListener('click', (event: MouseEvent) => {
     const targetKey = `${target.tagName}_${target.className}_${target.id}`;
     changes[targetKey] = {};
 
-    // Create a root div for the React component
+
     let root = document.getElementById('style-box-root');
     if (!root) {
         root = document.createElement('div');
@@ -98,7 +101,12 @@ document.addEventListener('click', (event: MouseEvent) => {
         document.body.appendChild(root);
     }
 
-    const reactive = createRoot(root);
+
+    if (!reactive) {
+        reactive = createRoot(root);
+    }
+
+
     reactive.render(
         <StyleBox target={target}
             changes={changes}

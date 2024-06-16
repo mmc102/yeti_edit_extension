@@ -1,5 +1,14 @@
 import React, { useEffect } from 'react';
-import { ColorInput, TextInput, SelectInput } from './components/Form';
+import { ColorInput, SelectInput, TextInput } from './components/Form';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
 
 interface StyleBoxProps {
     target: HTMLElement;
@@ -13,6 +22,7 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
 
     const computedStyles = window.getComputedStyle(target);
     const stylesToShow: string[] = ['color', 'background-color', 'font-size', 'align-items', 'justify-content', 'flex-direction'];
+
 
     const handleChange = (property: string, value: string) => {
         if (property === 'innerText') {
@@ -45,7 +55,7 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
                 color: '#fff',
                 border: '1px solid #444',
                 padding: '10px',
-                zIndex: 9999,
+                zIndex: 9998,
                 maxHeight: '300px',
                 overflowY: 'scroll',
                 boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
@@ -89,6 +99,7 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
                     );
                 }
             })}
+
             <TextInput
                 label="innerText"
                 value={target.innerText}
