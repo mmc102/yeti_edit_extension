@@ -1,14 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ColorInput, SelectInput, TextInput } from './components/Form';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-
 
 interface StyleBoxProps {
     target: HTMLElement;
@@ -23,13 +14,25 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
     const computedStyles = window.getComputedStyle(target);
     const stylesToShow: string[] = ['color', 'background-color', 'font-size', 'align-items', 'justify-content', 'flex-direction'];
 
+    const [styleValues, setStyleValues] = useState(
+        stylesToShow.reduce((acc, property) => {
+            acc[property] = computedStyles.getPropertyValue(property);
+            return acc;
+        }, {} as Record<string, string>)
+    );
 
     const handleChange = (property: string, value: string) => {
+
+
+        console.log("setting values", property, value)
+        setStyleValues((prevValues) => ({ ...prevValues, [property]: value }));
+
         if (property === 'innerText') {
             target.innerText = value;
         } else {
             target.style[property as any] = value;
         }
+
         changes[targetKey][property] = value;
     };
 
@@ -37,7 +40,7 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
         return () => {
             onClose();
         };
-    }, []);
+    }, [onClose]);
 
     const flexOptions = {
         'align-items': ['stretch', 'center', 'flex-start', 'flex-end', 'baseline'],
@@ -45,14 +48,26 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
         'flex-direction': ['row', 'row-reverse', 'column', 'column-reverse'],
     };
 
+    const calculateContrastingColor = (bgColor: string): string => {
+        const color = bgColor.charAt(0) === '#' ? bgColor.substring(1, 7) : bgColor;
+        const r = parseInt(color.substring(0, 2), 16);
+        const g = parseInt(color.substring(2, 4), 16);
+        const b = parseInt(color.substring(4, 6), 16);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness > 155 ? '#000' : '#fff';
+    };
+
+    const backgroundColor = '#333';
+    const textColor = calculateContrastingColor(backgroundColor);
+
     return (
         <div
             style={{
                 position: 'fixed',
                 right: '10px',
                 bottom: '10px',
-                backgroundColor: '#333',
-                color: '#fff',
+                backgroundColor,
+                color: textColor,
                 border: '1px solid #444',
                 padding: '10px',
                 zIndex: 9998,
@@ -64,8 +79,15 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
             }}
             onClick={(e) => e.stopPropagation()}
         >
+            <TextInput
+                label="Class Name"
+                value={target.className}
+                property="className"
+                onChange={() => {}}
+            />
+
             {stylesToShow.map((property) => {
-                const value = computedStyles.getPropertyValue(property);
+                const value = styleValues[property];
                 if (property === 'color' || property === 'background-color') {
                     return (
                         <ColorInput
