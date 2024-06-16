@@ -8,13 +8,17 @@ interface TextInputProps {
 }
 
 export const TextInput: React.FC<TextInputProps> = ({ label, value, property, onChange }) => {
+
+
+
     return (
         <div style={{ marginBottom: '10px' }}>
             <label>{label}: </label>
             <input
+                style={{ color: 'black' }}
                 type="text"
                 value={value}
-                onChange={(e) => onChange(property, e.target.value)}
+                onChange={(e) => { console.log(value); console.log(e.target.value); return onChange(property, e.target.value) }}
             />
         </div>
     );
@@ -78,7 +82,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ label, value, property
     return (
         <div style={{ marginBottom: '10px' }}>
             <label>{label}: </label>
-            <select value={val} onChange={(e) => { setVal(e.target.value); onChange(property, e.target.value) }}>
+            <select style={{ color: 'black' }} value={val} onChange={(e) => { setVal(e.target.value); onChange(property, e.target.value) }}>
                 {options.map((opt) => (
                     <option key={opt} value={opt}>
                         {opt}

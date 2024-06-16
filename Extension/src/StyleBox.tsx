@@ -20,19 +20,16 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
             return acc;
         }, {} as Record<string, string>)
     );
+    const [innerText, setInnerText] = useState(target.innerText);
 
     const handleChange = (property: string, value: string) => {
-
-
-        console.log("setting values", property, value)
-        setStyleValues((prevValues) => ({ ...prevValues, [property]: value }));
-
         if (property === 'innerText') {
+            setInnerText(value);
             target.innerText = value;
         } else {
+            setStyleValues((prevValues) => ({ ...prevValues, [property]: value }));
             target.style[property as any] = value;
         }
-
         changes[targetKey][property] = value;
     };
 
@@ -63,6 +60,7 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
     return (
         <div
             style={{
+                all: 'initial', // CSS reset
                 position: 'fixed',
                 right: '10px',
                 bottom: '10px',
@@ -124,7 +122,7 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
 
             <TextInput
                 label="innerText"
-                value={target.innerText}
+                value={innerText}
                 property="innerText"
                 onChange={handleChange}
             />
