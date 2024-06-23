@@ -23,6 +23,12 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
     const [innerText, setInnerText] = useState(target.innerText);
 
     const handleChange = (property: string, value: string) => {
+        let className = target.className;
+        if (className.includes('editing-element')) {
+            className = className.replace('editing-element', '').trim();
+        }
+        const targetKey = `${target.tagName}_${className}_${target.id}`;
+
         if (property === 'innerText') {
             setInnerText(value);
             target.innerText = value;
@@ -31,7 +37,9 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
             target.style[property as any] = value;
         }
         changes[targetKey][property] = value;
+        localStorage.setItem('styleChanges', JSON.stringify(changes));
     };
+
 
     useEffect(() => {
         return () => {
@@ -77,7 +85,6 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
             }}
             onClick={(e) => e.stopPropagation()}
         >
-
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontWeight: 'bold' }}>Style Box</span>
                 <button
@@ -130,12 +137,6 @@ const StyleBox: React.FC<StyleBoxProps> = ({ target, changes, onClose }) => {
                 }
             })}
 
-            <TextInput
-                label="Inner Text"
-                value={innerText}
-                property="innerText"
-                onChange={handleChange}
-            />
         </div>
     );
 };
